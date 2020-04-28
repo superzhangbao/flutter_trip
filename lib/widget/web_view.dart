@@ -96,6 +96,7 @@ class _WebViewState extends State<WebView> {
     return Scaffold(
       body: Column(
         children: <Widget>[
+          //int.parse('0xff'+statusBarColorStr) String转int
           _appBar(Color(int.parse('0xff'+statusBarColorStr)), backButtonColor),
           Expanded(
             child: WebviewScaffold(
@@ -104,13 +105,13 @@ class _WebViewState extends State<WebView> {
               withJavascript: true,
               withLocalStorage: true,
               withLocalUrl: true,
-              hidden: false,
-              initialChild: Container(
-                color: Colors.white,
-                child: Center(
-                  child: Text('Waiting...'),
-                ),
-              ),
+              hidden: true,
+//              initialChild: Container(
+//                color: Colors.white,
+//                child: Center(
+//                  child: Text('Waiting...'),
+//                ),
+//              ),
             ),
           ),
         ],
@@ -119,20 +120,24 @@ class _WebViewState extends State<WebView> {
   }
 
   Widget _appBar(Color bgc, Color backButtonColor) {
-    if (widget.hideAppBar ?? false) {
+//    if (widget.hideAppBar ?? false) {
+//      return Container(
+//        color: bgc,
+//        height: 30,
+//      );
+//    } else {
       return Container(
+        padding: EdgeInsets.fromLTRB(0, 40, 0, 10),
         color: bgc,
-        height: 30,
-      );
-    } else {
-      return Container(
         //撑满宽度
         child: FractionallySizedBox(
           widthFactor: 1,
           child: Stack(
             children: <Widget>[
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                },
                 child: Container(
                   margin: EdgeInsets.only(left: 10),
                   child: Icon(
@@ -156,6 +161,6 @@ class _WebViewState extends State<WebView> {
           ),
         ),
       );
-    }
+//    }
   }
 }
