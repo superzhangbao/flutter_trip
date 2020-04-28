@@ -9,10 +9,12 @@ import 'package:fluttertrip/widget/grid_nav.dart';
 import 'package:fluttertrip/widget/loading_container.dart';
 import 'package:fluttertrip/widget/local_nav.dart';
 import 'package:fluttertrip/widget/sales_box.dart';
+import 'package:fluttertrip/widget/search_bar.dart';
 import 'package:fluttertrip/widget/sub_nav.dart';
 import 'package:fluttertrip/widget/web_view.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
+const SEARCH_BAR_DEFAULT_TEXT = '网红打卡地 景点 酒店 美食';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,11 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List _imageUrls = [
-    "http://pages.ctrip.com/commerce/promote/20180718/yxzy/img/640sygd.jpg",
-    "http://pages.ctrip.com/commerce/promote/20180718/yxzy/img/640sygd.jpg",
-    "http://pages.ctrip.com/commerce/promote/20180718/yxzy/img/640sygd.jpg"
-  ];
   double _appBarAlpha = 0;
   List<CommonModel> localnavList = [];
   List<CommonModel> subNavList = [];
@@ -52,7 +49,7 @@ class _HomePageState extends State<HomePage> {
     print(_appBarAlpha);
   }
 
- Future<Null> _handleRefresh() async {
+  Future<Null> _handleRefresh() async {
     HomeDao.fetch().then((result) {
       setState(() {
         _loading = false;
@@ -72,44 +69,42 @@ class _HomePageState extends State<HomePage> {
     return null;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xfff2f2f2),
-        body: LoadingContainer(
-          isLoading: _loading,
-          child: Stack(
-            children: <Widget>[
-              MediaQuery.removePadding(
-                removeTop: true,
-                context: context,
-                child: RefreshIndicator(
-                    onRefresh: _handleRefresh,
-                    child: NotificationListener(
-                      // ignore: missing_return
-                      onNotification: (scrollNotification) {
-                        if (scrollNotification is ScrollUpdateNotification &&
-                            scrollNotification.depth == 0) {
-                          //滚动且是列表滚动的时候
-                          _onScroll(scrollNotification.metrics.pixels);
-                        }
-                      },
-                      child: _listView,
-                    )),
-              ),
-              _appBar,
-            ],
-          ),
+      backgroundColor: Color(0xfff2f2f2),
+      body: LoadingContainer(
+        isLoading: _loading,
+        child: Stack(
+          children: <Widget>[
+            MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: RefreshIndicator(
+                  onRefresh: _handleRefresh,
+                  child: NotificationListener(
+                    // ignore: missing_return
+                    onNotification: (scrollNotification) {
+                      if (scrollNotification is ScrollUpdateNotification &&
+                          scrollNotification.depth == 0) {
+                        //滚动且是列表滚动的时候
+                        _onScroll(scrollNotification.metrics.pixels);
+                      }
+                    },
+                    child: _listView,
+                  )),
+            ),
+            _appBar,
+          ],
         ),
+      ),
     );
   }
 
-  Widget get _listView{
+  Widget get _listView {
     return ListView(
       children: <Widget>[
-       _banner,
+        _banner,
         Padding(
           padding: EdgeInsets.fromLTRB(7, 4, 7, 4),
           child: LocalNav(localNavList: localnavList),
@@ -130,7 +125,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget get _banner{
+  Widget get _banner {
     return Container(
       height: 160,
       child: Swiper(
@@ -168,19 +163,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget get _appBar{
-    return Opacity(
-      opacity: _appBarAlpha,
-      child: Container(
-        height: 80,
-        decoration: BoxDecoration(color: Colors.white),
-        child: Center(
-          child: Padding(
+  Widget get _appBar {
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0x66000000), Colors.transparent],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Container(
             padding: EdgeInsets.only(top: 20),
-            child: Text("首页"),
+            height: 80.0,
+            decoration: BoxDecoration(
+              color:
+                  Color.fromARGB((_appBarAlpha * 255).toInt(), 255, 255, 255),
+            ),
+            child: SearchBar(
+              enable: true,
+              hideLeft: false,
+              searchBarType: _appBarAlpha > 0.2
+                  ? SearchBarType.homeLight
+                  : SearchBarType.hone,
+              inputBoxClick: _jumpToSearch,
+              speakClick: _jumpToSpeak,
+              defaultText: SEARCH_BAR_DEFAULT_TEXT,
+              leftButtonClick: () {},
+            ),
           ),
         ),
-      ),
+        Container(
+          height: _appBarAlpha > 0.2 ? 0.5 : 0,
+          decoration: BoxDecoration(
+            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 0.5)],
+          ),
+        ),
+      ],
     );
   }
+
+  void _jumpToSearch() {}
+
+  void _jumpToSpeak() {}
 }
