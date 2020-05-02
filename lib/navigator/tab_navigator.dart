@@ -31,53 +31,37 @@ class _TabNavigatorState extends State<TabNavigator> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _countIndex,
-        onTap: (index) {
-          _controller.jumpToPage(index);
-          setState(() {
-            _countIndex = index;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: _defaultColor,
-              ),
-              activeIcon: Icon(Icons.home, color: _activeColor),
-              title: Text('首页',
-                  style: TextStyle(
-                      color: _countIndex != 0 ? _defaultColor : _activeColor))),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
-                color: _defaultColor,
-              ),
-              activeIcon: Icon(Icons.search, color: _activeColor),
-              title: Text('搜索',
-                  style: TextStyle(
-                      color: _countIndex != 1 ? _defaultColor : _activeColor))),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.camera_alt,
-                color: _defaultColor,
-              ),
-              activeIcon: Icon(Icons.camera_alt, color: _activeColor),
-              title: Text('旅拍',
-                  style: TextStyle(
-                      color: _countIndex != 2 ? _defaultColor : _activeColor))),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.account_circle,
-                color: _defaultColor,
-              ),
-              activeIcon: Icon(Icons.account_circle, color: _activeColor),
-              title: Text('我的',
-                  style: TextStyle(
-                      color: _countIndex != 3 ? _defaultColor : _activeColor))),
-        ],
-      ),
+          currentIndex: _countIndex,
+          onTap: (index) {
+            _controller.jumpToPage(index);
+            setState(() {
+              _countIndex = index;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          items: [
+            _bottomItem('首页', Icons.home, 0),
+            _bottomItem('搜索', Icons.search, 1),
+            _bottomItem('旅拍', Icons.camera_alt, 2),
+            _bottomItem('我的', Icons.account_circle, 3),
+          ]),
     );
+  }
+
+  _bottomItem(String title, IconData icon, int index) {
+    return BottomNavigationBarItem(
+        icon: Icon(
+          icon,
+          color: _defaultColor,
+        ),
+        activeIcon: Icon(
+          icon,
+          color: _activeColor,
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+              color: _countIndex != index ? _defaultColor : _activeColor),
+        ));
   }
 }
