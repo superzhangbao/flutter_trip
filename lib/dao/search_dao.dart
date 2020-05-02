@@ -1,4 +1,3 @@
-import 'package:fluttertrip/model/home_model.dart';
 import 'package:fluttertrip/model/seach_model.dart';
 import 'dart:async';
 import 'dart:convert';
