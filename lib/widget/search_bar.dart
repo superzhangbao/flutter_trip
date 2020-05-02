@@ -150,10 +150,9 @@ class _SearchBarState extends State<SearchBar> {
               flex: 1,
               child: widget.searchBarType == SearchBarType.normal
                   ? TextField(
-
                       controller: _controller,
                       onChanged: _onChanged,
-                      autofocus: true,
+                      autofocus: false,
                       style: TextStyle(
                           fontSize: 18.0,
                           color: Colors.black,

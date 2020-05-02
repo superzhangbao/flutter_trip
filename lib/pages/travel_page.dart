@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertrip/dao/travel_tab_dao.dart';
 import 'package:fluttertrip/model/travel_tab_model.dart';
+import 'package:fluttertrip/pages/travel_tab_page.dart';
 
 class TravelPage extends StatefulWidget {
   @override
@@ -64,11 +65,14 @@ class _TravelPageState extends State<TravelPage> with TickerProviderStateMixin {
           //使用Flexible解决渲染时宽高丢失的问题
           Flexible(
             child: TabBarView(
-              controller: _controller,
-              children: tabs.map((TravelTab tab) {
-                return Text(tab.groupChannelCode);
-              }).toList(),
-            ),
+                controller: _controller,
+                children: tabs.map((TravelTab tab) {
+                  return TravelTabPage(
+                    travelUrl: travelTabModel.url,
+                    params: travelTabModel.params,
+                    groupChannelCode: tab.groupChannelCode,
+                  );
+                }).toList()),
           ),
         ],
       ),
