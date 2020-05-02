@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:fluttertrip/dao/home_dao.dart';
@@ -38,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    FlutterSplashScreen.hide();
     _handleRefresh();
   }
 
