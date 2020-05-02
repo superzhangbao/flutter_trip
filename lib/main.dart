@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BotToastInit(
         child: MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Flutter携程',
             navigatorObservers: [BotToastNavigatorObserver()],
             theme: ThemeData(
               primarySwatch: Colors.blue,

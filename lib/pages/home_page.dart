@@ -153,17 +153,14 @@ class _HomePageState extends State<HomePage> {
         onTap: (index) {
           BotToast.showText(text: "$index");
           var bannerPage = bannerList[index];
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => WebView(
+          NavigatorUtil.push(
+              context,
+              WebView(
                 url: bannerPage.url,
                 title: bannerPage.title,
                 hideAppBar: bannerPage.hideAppBar,
                 statusBarColor: bannerPage.statusBarColor,
-              ),
-            ),
-          );
+              ));
         },
       ),
     );
@@ -215,6 +212,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _jumpToSpeak() {
-    NavigatorUtil.push(context,SpeakPage());
+    NavigatorUtil.push(context, SpeakPage());
   }
 }
