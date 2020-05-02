@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -5,6 +7,8 @@ import 'package:fluttertrip/dao/home_dao.dart';
 import 'package:fluttertrip/model/common_model.dart';
 import 'package:fluttertrip/model/grid_nav_model.dart';
 import 'package:fluttertrip/model/sales_box_model.dart';
+import 'package:fluttertrip/pages/search_page.dart';
+import 'package:fluttertrip/util/navigator_util.dart';
 import 'package:fluttertrip/widget/grid_nav.dart';
 import 'package:fluttertrip/widget/loading_container.dart';
 import 'package:fluttertrip/widget/local_nav.dart';
@@ -49,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     print(_appBarAlpha);
   }
 
-  Future<Null> _handleRefresh() async {
+  Future<Null> _handleRefresh() {
     HomeDao.fetch().then((result) {
       setState(() {
         _loading = false;
@@ -65,7 +69,6 @@ class _HomePageState extends State<HomePage> {
         print(error.toString());
       });
     });
-
     return null;
   }
 
@@ -182,11 +185,11 @@ class _HomePageState extends State<HomePage> {
                   Color.fromARGB((_appBarAlpha * 255).toInt(), 255, 255, 255),
             ),
             child: SearchBar(
-              enable: true,
+              enabled: true,
               hideLeft: false,
               searchBarType: _appBarAlpha > 0.2
                   ? SearchBarType.homeLight
-                  : SearchBarType.hone,
+                  : SearchBarType.home,
               inputBoxClick: _jumpToSearch,
               speakClick: _jumpToSpeak,
               defaultText: SEARCH_BAR_DEFAULT_TEXT,
@@ -204,7 +207,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _jumpToSearch() {}
+  void _jumpToSearch() {
+    NavigatorUtil.push(context, SearchPage(hint: SEARCH_BAR_DEFAULT_TEXT));
+  }
 
-  void _jumpToSpeak() {}
+  void _jumpToSpeak() {
+
+  }
 }
