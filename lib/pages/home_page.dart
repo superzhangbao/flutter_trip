@@ -8,6 +8,7 @@ import 'package:fluttertrip/model/common_model.dart';
 import 'package:fluttertrip/model/grid_nav_model.dart';
 import 'package:fluttertrip/model/sales_box_model.dart';
 import 'package:fluttertrip/pages/search_page.dart';
+import 'package:fluttertrip/pages/speak_page.dart';
 import 'package:fluttertrip/util/navigator_util.dart';
 import 'package:fluttertrip/widget/grid_nav.dart';
 import 'package:fluttertrip/widget/loading_container.dart';
@@ -212,6 +213,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _jumpToSpeak() {
-
+    NavigatorUtil.push(context,SpeakPage());
   }
 }

@@ -14,6 +14,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Map;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
@@ -23,20 +26,19 @@ import io.flutter.plugin.common.PluginRegistry;
  * date : 2020/5/2 4:01 PM
  * description :
  */
-public class AsrPlugin implements MethodChannel.MethodCallHandler {
+public class AsrPlugin implements MethodChannel.MethodCallHandler, FlutterPlugin, ActivityAware {
     private static final String TAG = "AsrPlugin";
-    private final Activity activity;
+    private Activity activity;
     private ResultStateful resultStateful;
     private AsrManager asrManager;
 
-    public AsrPlugin(PluginRegistry.Registrar registrar) {
-        this.activity = registrar.activity();
+    private AsrPlugin(Activity activity) {
+        this.activity = activity;
     }
-
 
     public static void registerWith(PluginRegistry.Registrar registrar) {
         MethodChannel channel = new MethodChannel(registrar.messenger(), "asr_plugin");
-        AsrPlugin instance = new AsrPlugin(registrar);
+        AsrPlugin instance = new AsrPlugin(registrar.activity());
         channel.setMethodCallHandler(instance);
     }
 
@@ -88,7 +90,7 @@ public class AsrPlugin implements MethodChannel.MethodCallHandler {
     @Nullable
     private AsrManager getAsrManager() {
         if (asrManager == null) {
-            if (activity != null && activity.isFinishing()) {
+            if (activity != null && !activity.isFinishing()) {
                 asrManager = new AsrManager(activity, onAsrListener);
             }
         }
@@ -196,4 +198,39 @@ public class AsrPlugin implements MethodChannel.MethodCallHandler {
 
         }
     };
+
+    @Override
+    public void onAttachedToEngine(FlutterPluginBinding binding) {
+        Log.e(TAG,"onAttachedToEngine");
+//        MethodChannel channel = new MethodChannel(binding.getBinaryMessenger(), "asr_plugin");
+//        AsrPlugin instance = new AsrPlugin();
+//        channel.setMethodCallHandler(instance);
+    }
+
+    @Override
+    public void onDetachedFromEngine(FlutterPluginBinding binding) {
+        Log.e(TAG,"onDetachedFromEngine");
+    }
+
+    @Override
+    public void onAttachedToActivity(ActivityPluginBinding binding) {
+        Log.e(TAG,"onAttachedToActivity");
+        this.activity = binding.getActivity();
+        initPermission();
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+        Log.e(TAG,"onDetachedFromActivityForConfigChanges");
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+        Log.e(TAG,"onReattachedToActivityForConfigChanges");
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+        Log.e(TAG,"onDetachedFromActivity");
+    }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertrip/dao/search_dao.dart';
 import 'package:fluttertrip/model/seach_model.dart';
+import 'package:fluttertrip/pages/speak_page.dart';
 import 'package:fluttertrip/util/navigator_util.dart';
 import 'package:fluttertrip/widget/search_bar.dart';
 import 'package:fluttertrip/widget/web_view.dart';
@@ -124,7 +125,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _jumpToSpeak() {
-
+    NavigatorUtil.push(context, SpeakPage());
   }
 
   Widget _item(int position) {
